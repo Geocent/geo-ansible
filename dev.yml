@@ -1,0 +1,13 @@
+---
+- hosts: all
+  vars:
+    http_port: 80
+    max_clients: 200
+  sudo: yes
+  sudo_user: root
+  remote_user: ubuntu
+  roles:
+      - apt
+      - nginx
+      - apache
+
