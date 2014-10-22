@@ -8,3 +8,4 @@ Test ansible repo for Exosphere development
 - test3
 - test4
 - test5
+- test6
