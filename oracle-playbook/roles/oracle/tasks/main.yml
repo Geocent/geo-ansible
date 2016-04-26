@@ -1,0 +1,44 @@
+    - name: ensure packages required are installed
+      yum: pkg={{item}} state=latest
+      with_items:
+        - libaio
+        - bc
+        - flex
+        - unzip
+
+    - name: fetch oracle
+      get_url: url=https://acrws-jenkins.geocent.com/vagrant/oracle-xe-11.2.0-1.0.x86_64.rpm.zip dest=/opt/oracle-xe-11.2.0-1.0.x86_64.rpm.zip validate_certs=no
+
+    - name: unzip oracle rpm
+      command: /usr/bin/unzip -q /opt/oracle-xe-11.2.0-1.0.x86_64.rpm.zip -d /opt/oracle creates=/opt/oracle/Disk1
+
+    - name: install oracle xe 
+      yum: name={{item}} disable_gpg_check=yes disablerepo=* state=installed
+      with_items:
+        - /opt/oracle/Disk1/oracle-xe-11.2.0-1.0.x86_64.rpm
+
+    - copy: src=xe.rsp dest=/opt/oracle/xe.rsp
+
+    - name: configure oracle
+      shell: /etc/init.d/oracle-xe configure responseFile=/opt/oracle/xe.rsp
+      ignore_errors: true     
+
+    - stat: path=/home/vagrant/.bash_profile
+      register: vagrant
+
+    - name: setup oracle environment for vagrant
+      when: vagrant.stat.exists == true
+      shell: /bin/echo 'source /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh' >> /home/vagrant/.bash_profile
+
+    - name: setup oracle environment for root
+      when: vagrant.stat.exists == false
+      shell: /bin/echo 'source /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh' >> ~/.bash_profile
+
+    - copy: src=set_listener.sql dest=/opt/oracle/set_listener.sql
+
+    - copy: src=iptables dest=/etc/sysconfig/iptables
+      notify: restart iptables
+
+    - name: set oracle listener
+      shell: ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe /u01/app/oracle/product/11.2.0/xe/bin/sqlplus
+        system/password@localhost < /opt/oracle/set_listener.sql
