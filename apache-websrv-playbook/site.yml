@@ -1,0 +1,8 @@
+---
+# This playbook deploys a simple standalone apache 2.2 server. 
+
+- hosts: all 
+   
+  sudo: true
+  roles:
+    - apache

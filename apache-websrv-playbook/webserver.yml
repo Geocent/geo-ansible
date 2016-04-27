@@ -1,8 +1,0 @@
----
-- name: Add apache
-  hosts: all
-  sudo: yes
-  sudo_user: root
-  remote_user: ubuntu
-  roles:
-    - apache

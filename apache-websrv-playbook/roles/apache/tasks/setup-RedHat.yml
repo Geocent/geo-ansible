@@ -22,3 +22,7 @@
     line: "NameVirtualHost *:{{ apache_listen_port }}"
   }
   notify: restart apache
+  
+- name: deploy iptables rules
+  template: src=iptables-save dest=/etc/sysconfig/iptables
+  notify: restart iptables

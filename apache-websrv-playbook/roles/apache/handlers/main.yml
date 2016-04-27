@@ -3,3 +3,6 @@
   service: >
     name={{ apache_daemon }}
     state=restarted
+
+- name: restart iptables
+  service: name=iptables state=restarted
