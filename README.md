@@ -1,13 +1,4 @@
-exo-ansible
+Geocent Ansible Examples
 ===========
 
-Test ansible repo for Exosphere development
-
-- test1
-- test2
-- test3
-- test4
-- test5
-- test6
-- test7
-- test8
+This repository contains examples and best practices for building Ansible Playbooks most commonly used at Geocent.
