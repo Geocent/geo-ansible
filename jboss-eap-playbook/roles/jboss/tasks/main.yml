@@ -1,0 +1,15 @@
+---
+- include: jboss.yml
+  when: jboss_enabled
+
+- include: standalone.yml
+  when: not domain_enabled
+
+- include: domain.yml
+  when: domain_enabled
+
+- include: post.yml
+  when: jboss_enabled
+
+- include: iptables.yml
+  when: iptables_enabled

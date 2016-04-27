@@ -1,0 +1,32 @@
+---
+- name: Install Java 8
+  yum: name={{ java_distro }} state=latest
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Install unzip
+  yum: name=unzip state=latest
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Creates directory
+  file: path={{ jboss_home_parent }} state=directory recurse=yes
+
+- name: Extract archive
+  unarchive: src={{ jboss_archive }} dest={{ jboss_home_parent }}
+
+- name: Move to correct directory
+  command: chdir={{ jboss_home_parent }} mv {{ jboss_home_parent }}/{{ jboss_archive_root }} {{ jboss_home }} creates={{ jboss_home }}
+
+- name: Add jboss group
+  group: name={{ jboss_group }}
+
+- name: Add jboss user 
+  user: name={{ jboss_owner }} group={{ jboss_group }} home={{ jboss_home }} shell={{ jboss_shell }} system=yes
+
+- name: JBoss user ownership 
+  file: path={{ jboss_home }}/ owner={{ jboss_owner }} group={{ jboss_group }} state=directory mode=0770 recurse=yes
+
+- name: Creates directory
+  file: path=/etc/jboss-as state=directory recurse=yes
+
+- name: Copy jboss-as.conf
+  template: src=init.d/jboss-as.conf dest=/etc/jboss-as/jboss-as.conf mode=0644

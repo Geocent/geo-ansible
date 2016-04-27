@@ -1,0 +1,2 @@
+- name: Archive Installation
+  command: tar -cz -f {{ jboss_archive_root }}-STIG.tar.gz {{ jboss_home_dirname }} chdir={{ jboss_home_parent }}

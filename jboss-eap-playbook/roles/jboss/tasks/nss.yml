@@ -1,0 +1,14 @@
+---
+
+- name: Copy nssdb
+  copy: src=nssdb/ dest={{ jboss_home }}/nssdb/ owner={{ jboss_owner }} group={{ jboss_group }}
+
+- name: JBoss user ownership
+  file: path={{ jboss_home }}/nssdb owner={{ jboss_owner }} group={{ jboss_group }} state=directory recurse=yes
+
+- name: Copy nss_pkcs11_fips file
+  template: src=common/nss_pkcs11_fips.cfg dest={{ jboss_home }}/nss_pkcs11_fips.cfg owner={{ jboss_owner }} group={{ jboss_group }} mode=0777
+
+# jre dir path changes with java version change.  make jre dir a variable?
+- name: Add SunPKCS11 switch for nss file
+  template: src=common/java.security dest=/etc/alternatives/jre/lib/security/java.security mode=0644

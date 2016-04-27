@@ -1,0 +1,44 @@
+---
+
+- name: Copy init script (standalone)
+  template: src=init.d/jboss-as-standalone dest=/etc/init.d/jboss-as-standalone mode=0755
+
+- name: Copy init script (domain)
+  template: src=init.d/jboss-as-domain dest=/etc/init.d/jboss-as-domain mode=0755
+
+- name: Copy standalone-full.xml
+  template: src=standalone/standalone-full.xml dest={{ jboss_home }}/standalone/configuration/standalone-full.xml owner={{ jboss_owner }} group={{ jboss_group }} mode=0644
+
+- name: Copy standalone.conf
+  template: src=standalone/standalone.conf dest={{ jboss_home }}/bin/standalone-stig.conf owner={{ jboss_owner }} group={{ jboss_group }} mode=0664
+
+- name: Copy server.policy
+  template: src=bin/server.policy dest={{ jboss_home }}/bin/server.policy owner={{ jboss_owner }} group={{ jboss_group }} mode=0644
+
+- name: Copy standalone.sh
+  template: src=standalone/standalone.sh dest={{ jboss_home }}/bin/standalone.sh owner={{ jboss_owner }} group={{ jboss_group }} mode=0700
+
+- include: jks.yml
+
+- name: Create vault directory
+  file: path={{ jboss_home }}/vault state=directory owner={{ jboss_owner }} group={{ jboss_group }} mode=0700
+
+- name: Copy vault keystore
+  copy: src=vault.keystore dest={{ jboss_home }}/vault/vault.keystore owner={{ jboss_owner }} group={{ jboss_group }} mode=0600
+
+- include: nss.yml
+
+- name: Copy https-mgmt-users.properties
+  template: src=standalone/https-mgmt-users.properties dest={{ jboss_home }}/standalone/configuration/https-mgmt-users.properties owner={{ jboss_owner }} group={{ jboss_group }} mode=0600
+
+- name: Copy https-mgmt-groups.properties
+  template: src=standalone/https-mgmt-groups.properties dest={{ jboss_home }}/standalone/configuration/https-mgmt-groups.properties owner={{ jboss_owner }} group={{ jboss_group }} mode=0600
+
+- name: Copy mgmt-users.properties
+  template: src=standalone/mgmt-users.properties dest={{ jboss_home }}/standalone/configuration/mgmt-users.properties owner={{ jboss_owner }} group={{ jboss_group }} mode=0600
+
+- name: Copy mgmt-groups.properties
+  template: src=standalone/mgmt-groups.properties dest={{ jboss_home }}/standalone/configuration/mgmt-groups.properties owner={{ jboss_owner }} group={{ jboss_group }} mode=0600
+
+- name: JBoss log directory
+  file: path={{ jboss_home }}/standalone/log owner={{ jboss_owner }} group={{ jboss_group }} state=directory mode=0770 recurse=yes

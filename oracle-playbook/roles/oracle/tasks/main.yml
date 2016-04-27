@@ -7,7 +7,7 @@
         - unzip
 
     - name: fetch oracle
-      get_url: url=https://acrws-jenkins.geocent.com/vagrant/oracle-xe-11.2.0-1.0.x86_64.rpm.zip dest=/opt/oracle-xe-11.2.0-1.0.x86_64.rpm.zip validate_certs=no
+      get_url: url={{ oracle_xe_url }} dest=/opt/oracle-xe-11.2.0-1.0.x86_64.rpm.zip validate_certs=no
 
     - name: unzip oracle rpm
       command: /usr/bin/unzip -q /opt/oracle-xe-11.2.0-1.0.x86_64.rpm.zip -d /opt/oracle creates=/opt/oracle/Disk1

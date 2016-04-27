@@ -1,0 +1,10 @@
+---
+
+- name: Copy management identity keystore
+  copy: src=identity.jks dest={{ jboss_home }}/standalone/configuration/identity.jks owner={{ jboss_owner }} group={{ jboss_group }} mode=0600
+
+- name: Copy appserver keystore
+  copy: src=keystore.jks dest={{ jboss_home }}/standalone/configuration/keystore.jks owner={{ jboss_owner }} group={{ jboss_group }} mode=0600
+
+
+# ./bin/vault.sh --keystore vault/vault.keystore --keystore-password vault22 --alias vault --vault-block vb --attribute password --sec-attr 0penS3sam3 --enc-dir /vault/ --iteration 120 --salt 1234abcd

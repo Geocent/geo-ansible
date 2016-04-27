@@ -1,0 +1,17 @@
+---
+jboss_enabled: true
+iptables_enabled: true
+domain_enabled: false # else standalone enabled
+
+jboss_archive: "jboss-eap-6.4.0.zip"
+jboss_archive_root: "jboss-eap-6.4"
+jboss_home_parent: "/apps1"
+jboss_home_dirname: "jboss"
+jboss_home: "{{ jboss_home_parent }}/{{ jboss_home_dirname }}"
+jboss_shell: "/bin/false"
+jboss_owner: "jboss"
+jboss_group: "jboss"
+java_distro: java-1.8.0-openjdk
+ajp_port: 8009
+http_port: 8080
+https_port: 8443

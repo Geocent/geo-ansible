@@ -1,0 +1,13 @@
+---
+
+- name: Copy init script (domain)
+  template: src=init.d/jboss-as-domain dest=/etc/init.d/jboss-as-domain mode=0755
+
+- name: Copy domain.xml
+  template: src=domain/domain.xml dest={{ jboss_home }}/domain/configuration/domain.xml
+
+- name: Copy domain.conf
+  template: src=domain/domain.conf dest={{ jboss_home }}/bin/domain.conf
+
+- name: Copy domain.sh
+  template: src=domain/domain.sh dest={{ jboss_home }}/bin/domain.sh
